@@ -1,0 +1,17 @@
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+# E/F  pycodestyle + pyflakes: the baseline (style errors, unused names, typos)
+# I    import sorting
+# UP   flag syntax made obsolete by newer Python versions
+# B    bugbear: likely bugs that are still valid Python
+# D    docstring conventions
+select = ["E", "F", "I", "UP", "B", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.codespell]
+ignore-words-list = ""
+skip = "./.venv,./.git,./.ruff_cache,./data"

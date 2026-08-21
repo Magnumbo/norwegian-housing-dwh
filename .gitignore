@@ -1,0 +1,7 @@
+CLAUDE.md
+.venv
+__pycache__
+.vscode
+
+# Local data files from SSB
+data/
