@@ -6,13 +6,14 @@ from pathlib import Path
 import requests
 
 
-def fetch_data_ssb(table_id: str) -> None:
+def fetch_data_ssb(table_id: str, out_dir: str = "data/raw") -> None:
     """Fetch a table from SSB and write the raw JSON-stat response to disk.
 
-    The response body is saved untouched to data/raw/<table_id>.json.
+    The response body is saved untouched to <out_dir>/<table_id>.json.
 
     Args:
         table_id (str): SSB table id, e.g. "06265".
+        out_dir (str): Directory for the raw SSB table data
 
     Raises:
         requests.HTTPError: If SSB responds with a 4xx/5xx status.
@@ -23,9 +24,9 @@ def fetch_data_ssb(table_id: str) -> None:
     )
     r.raise_for_status()
 
-    Path("data/raw").mkdir(parents=True, exist_ok=True)
+    Path(out_dir).mkdir(parents=True, exist_ok=True)
 
-    with open(f"data/raw/{table_id}.json", "w", encoding="utf-8") as f:
+    with open(f"{out_dir}/{table_id}.json", "w", encoding="utf-8") as f:
         f.write(r.text)
 
 
@@ -33,8 +34,14 @@ def main() -> None:
     """Fetch a single SSB table into the raw layer."""
     parser = argparse.ArgumentParser(description="Ingest an SSB table.")
     parser.add_argument("table_id", help='SSB table id, e.g. "06265"')
+    parser.add_argument(
+        "--out-dir",
+        default="data/raw",
+        type=str,
+        help="directory for the raw SSB table data",
+    )
     args = parser.parse_args()
-    fetch_data_ssb(args.table_id)
+    fetch_data_ssb(args.table_id, args.out_dir)
 
 
 if __name__ == "__main__":
