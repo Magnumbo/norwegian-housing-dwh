@@ -24,9 +24,11 @@ def fetch_data_ssb(table_id: str, out_dir: str = "data/raw") -> None:
     )
     r.raise_for_status()
 
-    Path(out_dir).mkdir(parents=True, exist_ok=True)
+    out_path = Path(out_dir)
+    if not out_path.exists():
+        out_path.mkdir(parents=True)
 
-    with open(f"{out_dir}/{table_id}.json", "w", encoding="utf-8") as f:
+    with open(out_path / f"{table_id}.json", "w", encoding="utf-8") as f:
         f.write(r.text)
 
 
