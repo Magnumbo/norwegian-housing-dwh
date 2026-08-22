@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: ssb
+    database: nor_housing
+    schema: bronze
+    tables:
+      - name: raw_06265

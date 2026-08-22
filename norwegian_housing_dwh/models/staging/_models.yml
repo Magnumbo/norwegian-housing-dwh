@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_ssb__boliger
+    columns:
+      - name: year
+        tests:
+          - not_null
+      - name: region_code
+        tests:
+          - not_null
