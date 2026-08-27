@@ -6,3 +6,8 @@ sources:
     schema: bronze
     tables:
       - name: raw_06265
+  - name: klass
+    database: nor_housing
+    schema: bronze
+    tables:
+      - name: raw_131_changes
