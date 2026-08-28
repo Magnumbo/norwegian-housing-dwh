@@ -9,3 +9,21 @@ models:
       - name: region_code
         tests:
           - not_null
+  - name: stg_klass__kommune_endringer
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - old_code
+              - new_code
+              - change_date
+    columns:
+      - name: old_code
+        tests:
+          - not_null
+      - name: new_code
+        tests:
+          - not_null
+      - name: change_date
+        tests:
+          - not_null
