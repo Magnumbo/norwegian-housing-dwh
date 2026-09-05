@@ -27,3 +27,17 @@ models:
       - name: change_date
         tests:
           - not_null
+  - name: stg_klass__kommune_koder
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - code
+              - valid_from
+    columns:
+      - name: code
+        tests:
+          - not_null
+      - name: valid_from
+        tests:
+          - not_null

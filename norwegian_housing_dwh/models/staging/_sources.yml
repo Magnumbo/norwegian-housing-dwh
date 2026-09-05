@@ -11,3 +11,4 @@ sources:
     schema: bronze
     tables:
       - name: raw_131_changes
+      - name: raw_131_codes
