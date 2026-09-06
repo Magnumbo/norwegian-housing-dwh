@@ -31,3 +31,5 @@ models:
   norwegian_housing_dwh:
     staging:
       +materialized: view
+    intermediate:
+      +materialized: view
