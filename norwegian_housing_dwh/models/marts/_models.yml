@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_geography
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - code
+              - valid_from
+    columns:
+      - name: geography_key
+        tests:
+          - not_null
+          - unique
+      - name: code
+        tests:
+          - not_null
+      - name: valid_from
+        tests:
+          - not_null
