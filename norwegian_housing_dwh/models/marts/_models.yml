@@ -44,3 +44,24 @@ models:
       - name: dwellings
         tests:
           - not_null
+  - name: dwellings_naive_vs_harmonised
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - current_code
+              - year
+    columns:
+      - name: current_code
+        tests:
+          - not_null
+      - name: year
+        tests:
+          - not_null
+      - name: harmonised_dwellings
+        tests:
+          - not_null
+      - name: naive_dwellings
+        description: >
+          Dwellings for current_code itself only. NULL in years before the code
+          existed.
