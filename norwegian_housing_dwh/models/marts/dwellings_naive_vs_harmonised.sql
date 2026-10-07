@@ -15,7 +15,8 @@ geography_dwellings AS (
         code,
         year,
         dwellings,
-        area_code
+        area_code,
+        area_name
     FROM geography AS g
     INNER JOIN dwellings AS d ON g.geography_key = d.geography_key
 ),
@@ -23,10 +24,11 @@ geography_dwellings AS (
 harmonised AS (
     SELECT
         area_code,
+        area_name,
         year,
         SUM(dwellings) AS dwellings
     FROM geography_dwellings
-    GROUP BY area_code, year
+    GROUP BY area_code, area_name, year
 ),
 
 naive AS (
@@ -41,6 +43,7 @@ naive AS (
 
 SELECT
     h.area_code,
+    h.area_name,
     h.year,
     n.dwellings AS naive_dwellings,
     h.dwellings AS harmonised_dwellings

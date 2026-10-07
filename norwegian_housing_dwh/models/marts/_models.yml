@@ -22,6 +22,9 @@ models:
       - name: area_code
         tests:
           - not_null
+      - name: area_name
+        tests:
+          - not_null
   - name: fct_dwellings
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -56,6 +59,9 @@ models:
               - year
     columns:
       - name: area_code
+        tests:
+          - not_null
+      - name: area_name
         tests:
           - not_null
       - name: year
