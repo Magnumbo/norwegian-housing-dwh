@@ -15,3 +15,12 @@ models:
       - name: current_code
         tests:
           - not_null
+  - name: int_kommune_area
+    columns:
+      - name: area_code
+        tests:
+          - not_null
+      - name: current_code
+        tests:
+          - not_null
+          - unique
