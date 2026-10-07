@@ -19,6 +19,9 @@ models:
       - name: valid_from
         tests:
           - not_null
+      - name: area_code
+        tests:
+          - not_null
   - name: fct_dwellings
     tests:
       - dbt_utils.unique_combination_of_columns:
