@@ -24,3 +24,6 @@ models:
         tests:
           - not_null
           - unique
+      - name: area_name
+        tests:
+          - not_null
