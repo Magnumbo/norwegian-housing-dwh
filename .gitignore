@@ -2,6 +2,7 @@ handoff.md
 .venv
 __pycache__
 .vscode
+.env
 
 # Local data files from SSB
 data/
@@ -10,3 +11,4 @@ data/
 norwegian_housing_dwh/target/
 norwegian_housing_dwh/dbt_packages/
 logs/
+.envrc
