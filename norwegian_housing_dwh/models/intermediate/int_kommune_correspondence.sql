@@ -20,5 +20,5 @@ walk AS (
 SELECT start_code, current_code
 FROM walk
 -- Termination: keep the codes that never changed again. Assumes an old code no
--- longer exists, which does not hold for border adjustments (see ADR-0007)
+-- longer exists, which does not hold for border adjustments (see ADR-0006)
 WHERE current_code NOT IN (SELECT old_code FROM source_changes)

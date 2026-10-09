@@ -1,4 +1,4 @@
-# 0007. End the Klass change window before the 2026 border adjustment
+# 0006. End the Klass change window before the 2026 border adjustment
 
 Status: accepted
 Date: 2026-10-09
@@ -15,7 +15,7 @@ Fetch the list of kommune changes from Klass only up to the border change (to=20
 
 If we run the program for 2026, Indre Østfold disappears and its dwellings end up under Nordre Follo and Vestby, without any test failing.
 
-A larger rewrite of the code to account for cases where borders change, but no kommuner are merged or split is also a solution. Then we get a combined history for the three kommuner as per 0006, just because a couple of dwellings of a pool of about 57 000 dwellings changed ownership.
+A larger rewrite of the code to account for cases where borders change, but no kommuner are merged or split is also a solution. Then we get a combined history for the three kommuner as per 0005, just because a couple of dwellings of a pool of about 57 000 dwellings changed ownership.
 
 ## Consequences
 

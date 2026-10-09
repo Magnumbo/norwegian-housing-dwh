@@ -1,4 +1,4 @@
-# 0006. Harmonise split kommuner into stable areas
+# 0005. Harmonise split kommuner into stable areas
 
 Status: accepted
 Date: 2026-10-07
