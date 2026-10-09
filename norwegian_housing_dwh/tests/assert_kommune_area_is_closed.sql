@@ -1,5 +1,5 @@
 WITH correspondence AS (
-    SELECT * FROM {{ ref('int_kommune_korrespondanse') }}
+    SELECT * FROM {{ ref('int_kommune_correspondence') }}
 ),
 
 area AS (

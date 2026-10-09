@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_ssb__boliger
+  - name: stg_ssb__dwellings
     columns:
       - name: year
         tests:
@@ -9,7 +9,7 @@ models:
       - name: region_code
         tests:
           - not_null
-  - name: stg_klass__kommune_endringer
+  - name: stg_klass__kommune_changes
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -27,7 +27,7 @@ models:
       - name: change_date
         tests:
           - not_null
-  - name: stg_klass__kommune_koder
+  - name: stg_klass__kommune_codes
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

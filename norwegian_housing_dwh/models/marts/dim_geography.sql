@@ -1,9 +1,9 @@
 WITH kommune_code AS (
-    SELECT * FROM {{ ref('stg_klass__kommune_koder') }}
+    SELECT * FROM {{ ref('stg_klass__kommune_codes') }}
 ),
 
 correspondence AS (
-    SELECT * FROM {{ ref('int_kommune_korrespondanse') }}
+    SELECT * FROM {{ ref('int_kommune_correspondence') }}
 ),
 
 area AS (

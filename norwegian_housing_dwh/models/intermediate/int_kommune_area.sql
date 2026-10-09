@@ -1,12 +1,12 @@
 WITH correspondence AS (
-    SELECT * FROM {{ ref('int_kommune_korrespondanse') }}
+    SELECT * FROM {{ ref('int_kommune_correspondence') }}
 ),
 
 code_names AS (
     SELECT
         code,
         name
-    FROM {{ ref('stg_klass__kommune_koder') }}
+    FROM {{ ref('stg_klass__kommune_codes') }}
     WHERE is_current
 ),
 

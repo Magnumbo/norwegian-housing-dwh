@@ -1,6 +1,6 @@
 WITH national_total AS (
     SELECT year, SUM(dwellings) AS dwellings
-    FROM {{ ref('stg_ssb__boliger') }}
+    FROM {{ ref('stg_ssb__dwellings') }}
     WHERE region_code = '0'
     GROUP BY year
 ),
@@ -8,7 +8,7 @@ WITH national_total AS (
 -- 1901/1915 in 2013: SSB published on pre-merger codes (Harstad + Bjarkøy merged 2013-01-01)
 known_gaps AS (
     SELECT year, SUM(dwellings) AS dwellings
-    FROM {{ ref('stg_ssb__boliger') }}
+    FROM {{ ref('stg_ssb__dwellings') }}
     WHERE region_code = '2111'
         OR (region_code IN('1901', '1915') AND year = 2013)
     GROUP BY year

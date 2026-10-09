@@ -1,9 +1,9 @@
 WITH RECURSIVE source_changes AS (
-    SELECT * FROM {{ ref('stg_klass__kommune_endringer') }}
+    SELECT * FROM {{ ref('stg_klass__kommune_changes') }}
     WHERE old_code <> new_code
 ),
 source_codes AS (
-    SELECT * FROM {{ ref('stg_klass__kommune_koder') }}
+    SELECT * FROM {{ ref('stg_klass__kommune_codes') }}
 ),
 walk AS (
     -- Anchor member: every code starts at itself

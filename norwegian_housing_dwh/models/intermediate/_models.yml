@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_kommune_korrespondanse
+  - name: int_kommune_correspondence
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:

@@ -1,5 +1,5 @@
 WITH source_dwellings AS (
-    SELECT * FROM {{ ref('stg_ssb__boliger') }}
+    SELECT * FROM {{ ref('stg_ssb__dwellings') }}
 ),
 
 geography AS (
