@@ -2,14 +2,37 @@ version: 2
 
 models:
   - name: stg_ssb__dwellings
+    description: >
+      One row per year, region, building type for dwellings
+      in a region, including kommune. Comes from SSB api
+      table 06265, loaded into bronze.raw_06265.
     columns:
-      - name: year
-        tests:
-          - not_null
       - name: region_code
+        description: >
+          SSB region code: 0 for the whole country, two digits for a county
+          (fylke), four digits for a kommune.
         tests:
           - not_null
+      - name: building_type_code
+        description: >
+          SSB building type: 01 detached house, 02 house with 2 dwellings,
+          03 row house, linked house and house with 3 dwellings or more,
+          04 multi-dwelling building, 05 residence for communities, 999 other
+          building.
+      - name: year
+        description: Year of the count.
+        tests:
+          - not_null
+      - name: dwellings
+        description: >
+          Number of dwellings, occupied and vacant. 0, not NULL, for a code
+          that did not exist that year.
   - name: stg_klass__kommune_changes
+    description: >
+      One row shows when a kommune changed code and/or name,
+      from old code to new code at a change date. Comes from
+      SSB api table klass/v1/classifications/131/changes,
+      loaded into bronze.raw_131_changes.
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -18,16 +41,30 @@ models:
               - new_code
               - change_date
     columns:
-      - name: old_code
-        tests:
-          - not_null
-      - name: new_code
-        tests:
-          - not_null
       - name: change_date
+        description: Date the change took effect, usually 1 January.
         tests:
           - not_null
+      - name: old_code
+        description: Kommune code before the change.
+        tests:
+          - not_null
+      - name: old_name
+        description: Kommune name before the change.
+      - name: new_code
+        description: >
+          Kommune code after the change. Equal to old_code when only the name
+          changed.
+        tests:
+          - not_null
+      - name: new_name
+        description: Kommune name after the change.
   - name: stg_klass__kommune_codes
+    description: >
+      Shows all versions of all kommune codes since 2006,
+      and when they are valid from and to. SSB api table
+      klass/v1/classifications/131/codes, loaded into
+      bronze.raw_131_codes.
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -36,8 +73,20 @@ models:
               - valid_from
     columns:
       - name: code
+        description: Four-digit kommune code.
         tests:
           - not_null
+      - name: name
+        description: Kommune name in this version.
       - name: valid_from
+        description: >
+          First day this version is valid. Versions older than 2006 start at
+          2006-01-01, the start of the dwelling data.
         tests:
           - not_null
+      - name: valid_to
+        description: >
+          First day this version is no longer valid (exclusive). NULL for a
+          version still in use.
+      - name: is_current
+        description: True for a version still in use today.

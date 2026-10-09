@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: int_kommune_correspondence
+    description: >
+      Takes kommune codes and the history of when one kommune
+      changed into another, and makes a lookup table where
+      we can insert any old or current code and see which
+      code they belong to today. One row shows a start code
+      and which code it belongs to today. A split code gives
+      multiple rows.
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -10,20 +17,38 @@ models:
               - current_code
     columns:
       - name: start_code
+        description: Any kommune code that has existed since 2006.
         tests:
           - not_null
       - name: current_code
+        description: >
+          A code in use today that start_code has become. Equal to start_code
+          for a kommune whose code never changed.
         tests:
           - not_null
   - name: int_kommune_area
+    description: >
+      Sorts codes into area codes, with one row for each code
+      valid today. Useful for cases where a kommune is split,
+      and we don't know how we should divide the dwellings onto
+      the new kommuner. We then make an area consisting of
+      the new codes and join the dwellings onto it.
     columns:
-      - name: area_code
-        tests:
-          - not_null
       - name: current_code
+        description: A kommune code in use today.
         tests:
           - not_null
           - unique
+      - name: area_code
+        description: >
+          The stable area the code belongs to, identified by the lowest current
+          code in the area. Equal to current_code for a kommune that was never
+          split.
+        tests:
+          - not_null
       - name: area_name
+        description: >
+          Today's names of the kommuner in the area, sorted and joined with
+          " + ", e.g. "Haram + Ålesund".
         tests:
           - not_null

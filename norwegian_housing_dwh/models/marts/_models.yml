@@ -2,6 +2,13 @@ version: 2
 
 models:
   - name: dim_geography
+    description: >
+      The kommune dimension, slowly changing type 2 (SCD2). One row per version
+      of a kommune code since 2006, with the dates the version was valid, so the
+      whole history of the map is kept rather than overwritten. Each version also
+      carries the stable area it belongs to today (ADR-0005), which lets dwellings
+      be summed onto a geography that does not change. Built from Klass, which
+      already holds the history, rather than from dbt snapshots (ADR-0002).
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -10,22 +17,50 @@ models:
               - valid_from
     columns:
       - name: geography_key
+        description: >
+          Surrogate key, a hash of code and valid_from. The key fct_dwellings
+          points to.
         tests:
           - not_null
           - unique
       - name: code
-        tests:
-          - not_null
-      - name: valid_from
+        description: Four-digit kommune code.
         tests:
           - not_null
       - name: area_code
+        description: >
+          The stable area this version belongs to, identified by the lowest code
+          in use today in the area. Group by this column for a series that does
+          not break when the map changes.
         tests:
           - not_null
       - name: area_name
+        description: >
+          Today's names of the kommuner in the area, e.g. "Haram + Ålesund".
         tests:
           - not_null
+      - name: name
+        description: Kommune name in this version.
+      - name: valid_from
+        description: >
+          First day this version is valid. Versions older than 2006 start at
+          2006-01-01, the start of the dwelling data.
+        tests:
+          - not_null
+      - name: valid_to
+        description: >
+          First day this version is no longer valid (exclusive). NULL for a
+          version still in use.
+      - name: is_current
+        description: True for a version still in use today.
   - name: fct_dwellings
+    description: >
+      The dwelling stock from SSB table 06265. One row per kommune version,
+      building type and year. Each row points to the version of the kommune code
+      that was valid on 1 January that year (a point-in-time join to
+      dim_geography), so every figure stays attached to the map it was reported
+      on. National and county totals, and rows for codes that did not exist that
+      year, are left out. Two known source gaps are documented in ADR-0004.
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -35,6 +70,8 @@ models:
               - year
     columns:
       - name: geography_key
+        description: >
+          The version of the kommune in dim_geography that was valid that year.
         tests:
           - not_null
           - relationships:
@@ -42,15 +79,28 @@ models:
                 to: ref('dim_geography')
                 field: geography_key
       - name: building_type_code
+        description: >
+          SSB building type: 01 detached house, 02 house with 2 dwellings,
+          03 row house, linked house and house with 3 dwellings or more,
+          04 multi-dwelling building, 05 residence for communities, 999 other
+          building.
         tests:
           - not_null
       - name: year
+        description: Year of the count.
         tests:
           - not_null
       - name: dwellings
+        description: Number of dwellings, occupied and vacant. Additive.
         tests:
           - not_null
   - name: dwellings_naive_vs_harmonised
+    description: >
+      Demonstrates the problem the warehouse solves. One row per stable area and
+      year, with two series for the same place. The naive series follows only
+      today's codes and breaks at every boundary change. The harmonised series
+      sums every kommune that has ever been part of the area, so it stays
+      continuous. For a kommune that never changed, the two are equal.
     tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
@@ -59,18 +109,24 @@ models:
               - year
     columns:
       - name: area_code
+        description: The stable area, as in dim_geography.
         tests:
           - not_null
       - name: area_name
+        description: Today's names of the kommuner in the area.
         tests:
           - not_null
       - name: year
-        tests:
-          - not_null
-      - name: harmonised_dwellings
+        description: Year of the count.
         tests:
           - not_null
       - name: naive_dwellings
         description: >
-          Dwellings for today's code itself only. NULL in years before those code
-          existed.
+          Dwellings for today's codes themselves only. NULL in years before those
+          codes existed.
+      - name: harmonised_dwellings
+        description: >
+          Dwellings in every kommune that has been part of the area, summed.
+          Continuous across boundary changes.
+        tests:
+          - not_null

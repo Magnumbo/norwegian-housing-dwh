@@ -2,13 +2,26 @@ version: 2
 
 sources:
   - name: ssb
+    description: >
+      Statistics Norway StatBank tables, fetched by notebooks/ingest and loaded
+      by notebooks/load_bronze.
     database: nor_housing
     schema: bronze
     tables:
       - name: raw_06265
+        description: >
+          SSB table 06265, dwellings by building type, unpacked from JSON-stat
+          into one row per cell, including totals and zero cells.
   - name: klass
+    description: >
+      SSB Klass classification 131 (kommuner), fetched by notebooks/ingest and
+      loaded by notebooks/load_bronze.
     database: nor_housing
     schema: bronze
     tables:
       - name: raw_131_changes
+        description: >
+          Code and name changes from the /changes endpoint, up to 2026-01-01
+          (ADR-0006).
       - name: raw_131_codes
+        description: All versions of all codes since 2006, from the /codes endpoint.
