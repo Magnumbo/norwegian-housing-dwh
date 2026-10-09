@@ -224,7 +224,7 @@ Study these for approach and structure; do not copy.
 - **Python style:** PEP 8 via ruff. Run `ruff format` before committing; keep
   formatting-only changes in their own commit.
 - **dbt:** layered models (staging → intermediate → marts); tests as contracts,
-  not decoration; document sources with freshness.
+  not decoration; document every source.
 - **Commit messages:** light Conventional Commits — `type(scope): imperative
   summary, lowercase, no full stop`; types `feat|fix|refactor|docs|chore|style`;
   English. **Never add `Co-Authored-By: Claude`** — Magnus writes the code, so

@@ -1,4 +1,4 @@
-"""Ingest SSB StatBank tables into the local raw layer."""
+"""Fetch SSB StatBank tables as raw JSON-stat files."""
 
 import argparse
 from pathlib import Path
