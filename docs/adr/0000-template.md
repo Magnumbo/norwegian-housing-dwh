@@ -1,20 +1,20 @@
-# NNNN. Kort tittel som sier både problem og valg
+# NNNN. Short title that states both the problem and the choice
 
 Status: proposed | accepted | superseded by ADR-XXXX
 Date: YYYY-MM-DD
 
 ## Context
 
-Hvilken kraft/situasjon tvang fram valget? Nøytralt, faktabasert.
+What situation forced the choice? Neutral and factual.
 
 ## Decision
 
-Hva bestemte vi? Aktiv stemme: «Vi bruker en count (antall boliger) som faktum.»
+What did we decide? Active voice: "We use a count (number of dwellings) as the fact."
 
 ## Alternatives considered
 
-Hva vi vurderte og hvorfor vi ikke gikk videre.
+What we considered, and why we did not go with it.
 
 ## Consequences
 
-Hva blir lettere, hva blir vanskeligere? Både godt og vondt.
+What becomes easier, what becomes harder? Both good and bad.
