@@ -113,7 +113,12 @@ system instead of building a house of cards that only stands at the end.
     target geography — the trap is double-counting, not non-additivity (see
     Known facts). It lives as a dbt **mart model** (versioned, tested, part of
     the star schema), not a loose notebook; any figure on top is presentation.
-- **Phase 4** — Databricks Workflows orchestration + GitHub Actions CI.
+- **Phase 4** — Databricks Workflows orchestration + GitHub Actions CI. *(done)*
+  - One job (`jobs/nor_housing_pipeline.yml`): `notebooks/ingest` →
+    `notebooks/load_bronze` → `dbt build`, run from `main` via Git source, no
+    schedule (the project is not in operation).
+  - CI runs `dbt build --target ci` on every push and pull request. CI writes
+    to its own `ci` / `ci_gold` schemas, never to production.
 
 Scope discipline: **one fact table** (dwelling stock per municipality, SSB 06265),
 a handful of dimensions, SCD2 on geography as the signature feature. Resist scope
@@ -124,11 +129,15 @@ creep actively.
 - **SSB PxWebApi** is open, no registration. Version 2 (from Oct 2025) supports
   HTTP GET; base lives under `data.ssb.no`. Output is JSON-stat 1.2 or CSV.
 - **The fact is SSB table 06265** — "Boliger, etter bygningstype", dwelling stock
-  per municipality, annual **2006–2025**, at kommune level (`(K)`). Chosen and
+  per municipality, annual **2006–2026**, at kommune level (`(K)`). Chosen and
   verified 2026-08-21. This is the grain that lets the signature feature be shown
   across *both* the 2020 and 2024 boundary changes. Its variables are Region,
   Bygningstype, ContentsCode and Tid — confirm them against the live metadata
   endpoint before building staging (Phase 2); do not assume field names.
+  SSB notes a **method break in 2012** (the dwelling population was redefined),
+  so figures before and after are not fully comparable. That break is in method,
+  not geography, and harmonisation does not address it. 2012 figures were
+  corrected by SSB on 2026-09-16.
 - **Why a count and not price:** SSB does **not** publish square-metre price at
   kommune level over time. Kommune-level price (tables 14310/14545) starts in 2025
   only; every historical price series is national (07240/07241), fylke (03364 /
@@ -143,7 +152,10 @@ creep actively.
   municipalities) and 2024 (114 new numbers; Ålesund split into Ålesund + Haram).
   SSB publishes the change/correspondence data (SSB Klass classification API and
   the "Alle endringer i de regionale inndelingene" resource) — that mapping is
-  what feeds the SCD2 dimension.
+  what feeds the SCD2 dimension. 2026 brought a **border adjustment** (parts of
+  Indre Østfold 3118 moved to Nordre Follo and Vestby while 3118 lived on), which
+  the correspondence model cannot represent; the Klass change window therefore
+  ends at 2026-01-01 (ADR-0006).
 - **Do not hand-build the municipality-change mapping — pull it from the SSB Klass
   API.** Klass already exposes exactly what the SCD2 dimension needs: the code set
   as it was on a given date, the changes within a time range, and correspondence
@@ -161,13 +173,17 @@ creep actively.
   (Design decision 2026-08-21; research 2026-08-19.)
 - **Databricks outbound internet works** (confirmed 2026-08-22: SSB reachable from
   Databricks compute, HTTP 200), so the ingest runs *inside* Databricks rather than
-  ingesting locally and uploading. `fetch_ssb.py` is pulled in as a Databricks **Git
-  folder** and run there, writing the raw JSON-stat straight to a Unity Catalog
-  Volume. SSB needs no API key, so no Databricks Secrets — but keep the `timeout=`
-  habit on every outbound request.
+  ingesting locally and uploading. `notebooks/ingest` calls `fetch_ssb.py` and
+  `fetch_klass.py` inside Databricks, writing the raw responses straight to a
+  Unity Catalog Volume; `notebooks/load_bronze` turns them into bronze tables.
+  SSB needs no API key, so no Databricks Secrets — but keep the `timeout=` habit
+  on every outbound request.
   - **Raw landing location:** catalog `nor_housing`, schema `bronze`, volume `ssb`
     → `/Volumes/nor_housing/bronze/ssb/<table_id>.json`. A dedicated catalog keeps
     the project isolated from other work in the workspace.
+  - **Medallion schemas:** `bronze` (raw tables), `silver` (dbt staging and
+    intermediate), `gold` (marts). A `generate_schema_name` override keeps the
+    bare names in production and the default prefix in CI.
 - **Orchestration:** Databricks Workflows is real orchestration and enough for
   the project. Airflow/Dagster and dashboards/analysis are **out of scope** — the
   project ends with Phase 4; analysis on top of the data belongs in a separate
