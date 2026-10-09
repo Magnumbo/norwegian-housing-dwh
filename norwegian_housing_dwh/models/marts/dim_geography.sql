@@ -10,6 +10,9 @@ area AS (
     SELECT * FROM {{ ref('int_kommune_area') }}
 ),
 
+-- A split code leads to several of today's codes, but they all share one area.
+-- DISTINCT keeps one row per historical code, so the (code, valid_from) grain
+-- holds (ADR-0005).
 code_with_area AS (
     SELECT DISTINCT
         c.start_code,
@@ -26,6 +29,8 @@ code_with_key AS (
     FROM kommune_code
 ),
 
+-- Left join so a code without an area stays in the dimension and fails the
+-- not_null test on area_code, instead of disappearing silently
 code_key_area AS (
     SELECT
         k.*,

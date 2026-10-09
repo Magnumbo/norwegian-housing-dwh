@@ -1,3 +1,5 @@
+-- Fails if the harmonised series counts dwellings twice or drops any: each year,
+-- the sum over all areas must equal the fact total.
 WITH mart AS (
     SELECT
         year,

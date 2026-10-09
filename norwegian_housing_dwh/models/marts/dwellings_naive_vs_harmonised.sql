@@ -31,6 +31,8 @@ harmonised AS (
     GROUP BY area_code, area_name, year
 ),
 
+-- Naive: only today's codes themselves, as if the map never changed. Empty for
+-- the years before those codes existed.
 naive AS (
     SELECT
         gd.area_code,

@@ -10,6 +10,9 @@ code_names AS (
     WHERE is_current
 ),
 
+-- Today's codes that share a historical code belong to the same area, e.g. 1508
+-- and 1580 both come from 1507. Grouping is one step only; a longer chain of
+-- splits is caught by assert_kommune_area_is_closed.
 code_pairs AS (
     SELECT
         c1.current_code AS current_code_1,
@@ -18,6 +21,7 @@ code_pairs AS (
     INNER JOIN correspondence AS c2 ON c1.start_code = c2.start_code
 ),
 
+-- The lowest code in the group identifies the area
 area AS (
     SELECT
         current_code_1 AS current_code,

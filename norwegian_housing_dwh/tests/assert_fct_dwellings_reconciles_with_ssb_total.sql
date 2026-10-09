@@ -1,3 +1,5 @@
+-- Fails if fct_dwellings loses rows: each year, its total must equal SSB's
+-- national total minus the documented source gaps (ADR-0004).
 WITH national_total AS (
     SELECT year, SUM(dwellings) AS dwellings
     FROM {{ ref('stg_ssb__dwellings') }}

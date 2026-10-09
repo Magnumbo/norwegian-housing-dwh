@@ -6,6 +6,8 @@ geography AS (
     SELECT * FROM {{ ref('dim_geography') }}
 ),
 
+-- Municipality changes take effect on 1 January, so each year is matched to the
+-- code version valid on that date
 source_dwellings_year_as_date AS (
     SELECT
         *,
@@ -13,6 +15,10 @@ source_dwellings_year_as_date AS (
     FROM source_dwellings
 ),
 
+-- Inner join on purpose: it drops the national and county totals and the zero
+-- rows for codes that did not exist that year. Rows lost for other reasons are
+-- caught by assert_fct_dwellings_reconciles_with_ssb_total (ADR-0004).
+-- valid_to is exclusive, and NULL for the version in use today.
 source_with_keys AS (
     SELECT *
     FROM source_dwellings_year_as_date AS s

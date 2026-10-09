@@ -1,3 +1,6 @@
+-- Fails if a historical code belongs to more than one stable area. Areas are
+-- grouped in one step in int_kommune_area; a longer chain of splits would break
+-- that (ADR-0005).
 WITH correspondence AS (
     SELECT * FROM {{ ref('int_kommune_correspondence') }}
 ),

@@ -6,6 +6,8 @@ renamed AS (
     SELECT
         code,
         name,
+        -- Validity clipped to the requested range (from 2006), the span of the
+        -- dwelling data. Klass leaves valid_to empty for codes still in use.
         cast(validFromInRequestedRange AS date) AS valid_from,
         cast(validToInRequestedRange AS date) AS valid_to
     FROM source
