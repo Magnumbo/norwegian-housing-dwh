@@ -6,7 +6,6 @@ renamed AS (
     SELECT
         region       AS region_code,
         bygntype     AS building_type_code,
-        contentscode AS contentscode_code,
         cast(tid AS int) AS year,
         value        AS dwellings
     FROM source
