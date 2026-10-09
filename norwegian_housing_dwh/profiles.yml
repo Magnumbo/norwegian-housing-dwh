@@ -1,0 +1,19 @@
+norwegian_housing_dwh:
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      catalog: nor_housing
+      schema: silver
+      host: "{{ env_var('DATABRICKS_HOST') }}"
+      http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      threads: 4
+    ci:
+      type: databricks
+      catalog: nor_housing
+      schema: ci
+      host: "{{ env_var('DATABRICKS_HOST') }}"
+      http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      threads: 4
