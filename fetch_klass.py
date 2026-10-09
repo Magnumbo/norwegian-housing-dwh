@@ -1,4 +1,4 @@
-"""Fetch SSB klassifications (Klass)."""
+"""Fetch SSB classifications (Klass)."""
 
 import argparse
 from pathlib import Path

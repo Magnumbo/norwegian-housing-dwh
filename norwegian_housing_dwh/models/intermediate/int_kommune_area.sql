@@ -1,4 +1,4 @@
-WITH korrespondanse AS (
+WITH correspondence AS (
     SELECT * FROM {{ ref('int_kommune_korrespondanse') }}
 ),
 
@@ -12,10 +12,10 @@ code_names AS (
 
 code_pairs AS (
     SELECT
-        k1.current_code AS current_code_1,
-        k2.current_code AS current_code_2
-    FROM korrespondanse AS k1
-    INNER JOIN korrespondanse AS k2 ON k1.start_code = k2.start_code
+        c1.current_code AS current_code_1,
+        c2.current_code AS current_code_2
+    FROM correspondence AS c1
+    INNER JOIN correspondence AS c2 ON c1.start_code = c2.start_code
 ),
 
 area AS (

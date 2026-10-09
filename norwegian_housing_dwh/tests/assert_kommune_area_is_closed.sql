@@ -1,4 +1,4 @@
-WITH korrespondanse AS (
+WITH correspondence AS (
     SELECT * FROM {{ ref('int_kommune_korrespondanse') }}
 ),
 
@@ -8,11 +8,11 @@ area AS (
 
 areas_per_start_code AS (
     SELECT
-        k.start_code,
+        c.start_code,
         COUNT(DISTINCT a.area_code) AS count_areas
-    FROM korrespondanse AS k
-    INNER JOIN area AS a ON k.current_code = a.current_code
-    GROUP BY k.start_code
+    FROM correspondence AS c
+    INNER JOIN area AS a ON c.current_code = a.current_code
+    GROUP BY c.start_code
 )
 
 SELECT
