@@ -11,7 +11,7 @@ code_names AS (
 ),
 
 code_pairs AS (
-    SELECT 
+    SELECT
         k1.current_code AS current_code_1,
         k2.current_code AS current_code_2
     FROM korrespondanse AS k1
@@ -19,7 +19,7 @@ code_pairs AS (
 ),
 
 area AS (
-    SELECT 
+    SELECT
         current_code_1 AS current_code,
         MIN(current_code_2) AS area_code
     FROM code_pairs
