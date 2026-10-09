@@ -13,5 +13,5 @@ select = ["E", "F", "I", "UP", "B", "D"]
 convention = "google"
 
 [tool.codespell]
-ignore-words-list = ""
+ignore-words-list = "kommune, kommuner"
 skip = "./.venv,./.git,./.ruff_cache,./data"
