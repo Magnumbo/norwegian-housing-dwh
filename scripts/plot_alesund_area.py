@@ -50,8 +50,8 @@ wide = df.pivot_table(
 
 
 # Bottom to top: the largest, most stable layer first
-layer_order = ["Ålesund", "Haram", "Skodje, Ørskog, Sandøy", "Merged (2020–2023)"]
-layer_colors = ["#2a78d6", "#eb6834", "#1baf7a", "#b5b5b5"]
+layer_order = ["Ålesund", "Skodje, Ørskog, Sandøy", "Haram", "Merged (2020–2023)"]
+layer_colors = ["#2a78d6", "#1baf7a", "#eb6834", "#b5b5b5"]
 wide = wide[layer_order]
 
 # What a naive query on the name "Ålesund" returns: 1504, then 1507, then 1508
