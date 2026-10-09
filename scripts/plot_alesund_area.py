@@ -17,12 +17,12 @@ with sql.connect(
 ) as conn:
     with conn.cursor() as cursor:
         cursor.execute("""
-            SELECT code, year, g.name, SUM(dwellings) AS dwellings 
-            FROM nor_housing.silver.dim_geography AS g 
-            INNER JOIN nor_housing.silver.fct_dwellings AS d 
-                ON g.geography_key = d.geography_key 
-            WHERE area_code = '1508' 
-            GROUP BY code, year, g.name 
+            SELECT code, year, g.name, SUM(dwellings) AS dwellings
+            FROM nor_housing.gold.dim_geography AS g
+            INNER JOIN nor_housing.gold.fct_dwellings AS d
+                ON g.geography_key = d.geography_key
+            WHERE area_code = '1508'
+            GROUP BY code, year, g.name
             ORDER BY code, year
         """)
         df = cursor.fetchall_arrow().to_pandas()

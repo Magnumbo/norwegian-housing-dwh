@@ -24,9 +24,8 @@ clean-targets: # directories to be removed by `dbt clean`
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
-# In this example config, we tell dbt to build all models in the example/
-# directory as views. These settings can be overridden in the individual model
-# files using the `{{ config(...) }}` macro.
+# Medallion layers: staging and intermediate land in the target schema (silver),
+# marts in gold. See macros/generate_schema_name.sql for how the names are built.
 models:
   norwegian_housing_dwh:
     staging:
@@ -35,3 +34,4 @@ models:
       +materialized: view
     marts:
       +materialized: table
+      +schema: gold
