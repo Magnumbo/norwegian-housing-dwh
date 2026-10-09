@@ -28,6 +28,10 @@ clean-targets: # directories to be removed by `dbt clean`
 # marts in gold. See macros/generate_schema_name.sql for how the names are built.
 models:
   norwegian_housing_dwh:
+    # Write the YAML descriptions to Unity Catalog as table and column comments
+    +persist_docs:
+      relation: true
+      columns: true
     staging:
       +materialized: view
     intermediate:
