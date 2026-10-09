@@ -3,3 +3,6 @@ target/
 dbt_packages/
 logs/
 .env
+
+# Anonymous user id dbt writes next to profiles.yml
+.user.yml
